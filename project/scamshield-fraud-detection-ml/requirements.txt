@@ -1,0 +1,16 @@
+pandas
+numpy
+scikit-learn
+xgboost
+imbalanced-learn
+fastapi
+uvicorn
+streamlit
+joblib
+matplotlib
+seaborn
+asyncpg
+python-dotenv
+psycopg2-binary
+evidently
+shap

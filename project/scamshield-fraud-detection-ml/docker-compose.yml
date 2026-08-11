@@ -1,0 +1,101 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: scamshield_db
+    restart: always
+    environment:
+      POSTGRES_DB: scamshield
+      POSTGRES_USER: scamuser
+      POSTGRES_PASSWORD: scampass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U scamuser -d scamshield"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: scamshield_api
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://scamuser:scampass@db:5432/scamshield
+    depends_on:
+      db:
+        condition: service_healthy
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    container_name: scamshield_dashboard
+    restart: always
+    ports:
+      - "8501:8501"
+    environment:
+      API_URL: http://api:8000
+      DATABASE_URL: postgresql://scamuser:scampass@db:5432/scamshield
+    depends_on:
+      db:
+        condition: service_healthy
+      api:
+        condition: service_started
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: scamshield_pgadmin
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@scamshield.com
+      PGADMIN_DEFAULT_PASSWORD: adminpass
+    depends_on:
+      db:
+        condition: service_healthy
+
+  superset:
+    image: apache/superset:3.0.0
+    container_name: scamshield_superset
+    restart: always
+    ports:
+      - "8088:8088"
+    environment:
+      SUPERSET_SECRET_KEY: "scamshieldsecretkeyfortestingonly12345"
+      SQLALCHEMY_DATABASE_URI: postgresql://scamuser:scampass@db:5432/scamshield
+    volumes:
+      - ./superset/superset_config.py:/app/pythonpath/superset_config.py
+    depends_on:
+      db:
+        condition: service_healthy
+
+  superset-init:
+    image: apache/superset:3.0.0
+    container_name: scamshield_superset_init
+    environment:
+      SUPERSET_SECRET_KEY: "scamshieldsecretkeyfortestingonly12345"
+    entrypoint: [ "/bin/sh", "-c" ]
+    command: >
+      "
+      superset db upgrade &&
+      superset fab create-admin --username admin --firstname Admin --lastname Admin --email admin@scamshield.com --password admin &&
+      superset init
+      "
+    depends_on:
+      db:
+        condition: service_healthy
+      superset:
+        condition: service_started
+
+volumes:
+  postgres_data:
