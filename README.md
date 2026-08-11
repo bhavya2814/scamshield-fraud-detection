@@ -63,3 +63,86 @@ scamshield-fraud-detection-ml/
 ├── docker-compose.yml     # Multi-container service orchestrator
 ├── requirements.txt       # Project dependencies
 └── README.md              # Project documentation
+
+🚀 Getting Started
+1. Prerequisites
+Ensure Python 3.10+ and Git are installed on your machine.
+
+2. Clone the Repository
+Bash
+
+
+git clone [https://github.com/YOUR_USERNAME/scamshield-fraud-detection-ml.git](https://github.com/YOUR_USERNAME/scamshield-fraud-detection-ml.git)
+cd scamshield-fraud-detection-ml
+3. Create & Activate Virtual Environment
+Linux / macOS:
+
+Bash
+
+
+python3 -m venv .venv
+source .venv/bin/activate
+Windows (Command Prompt / PowerShell):
+
+DOS
+
+
+python -m venv .venv
+.venv\Scripts\activate
+4. Install Dependencies
+Bash
+
+
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+⚙️ Running the Application
+Option A: Running Local Services
+Start the FastAPI Backend API:
+
+Bash
+
+
+source .venv/bin/activate
+uvicorn api.main:app --reload --port 8000
+API Root: http://127.0.0.1:8000
+
+Interactive Swagger UI: http://127.0.0.1:8000/docs
+
+Start the Streamlit Dashboard (In a new terminal tab):
+
+Bash
+
+
+source .venv/bin/activate
+streamlit run dashboard/app.py
+Dashboard URL: http://localhost:8501
+
+Option B: Running with Docker Compose
+To spin up the entire application stack in containerized mode:
+
+Bash
+
+
+docker-compose up --build
+🔐 API Authorization & Example Request
+To authorize API requests in Swagger UI (http://127.0.0.1:8000/docs):
+
+Click Authorize on the top right.
+
+Enter the secret key: scamshield_secret_key_2026.
+
+Submit a payload to POST /predict:
+
+JSON
+
+
+{
+  "amount": 180000.00,
+  "oldbalanceOrg": 180000.00,
+  "newbalanceOrig": 0.00,
+  "oldbalanceDest": 0.00,
+  "newbalanceDest": 180000.00,
+  "transaction_type": "TRANSFER"
+}
+📜 License & Acknowledgments
+This project uses open-source components and datasets licensed under the MIT License.
