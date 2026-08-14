@@ -430,39 +430,8 @@ Contributions are welcome! Please follow these steps:
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-
-## 👨‍💻 Author
-
-**Ashish**
-
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
-- Email: your.email@example.com
-
----
-
-## 🙏 Acknowledgments
-
-- Dataset provided by [Machine Learning Group - ULB](https://www.kaggle.com/mlg-ulb/creditcardfraud)
-- Inspired by real-world fraud detection systems
-- Thanks to the open-source community for amazing tools
-
----
-
-## 📞 Support
-
-If you encounter any issues or have questions:
-
-1. Check the [Issues](https://github.com/yourusername/scam_shield/issues) page
-2. Create a new issue with detailed description
-3. Join our community discussions
-
----
-
 <div align="center">
 
 **⭐ Star this repository if you found it helpful!**
-
-Made with ❤️ by Ashish Kumar Singh
 
 </div>
